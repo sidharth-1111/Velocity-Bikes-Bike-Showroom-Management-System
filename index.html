@@ -1,0 +1,637 @@
+<!DOCTYPE html>
+<html>
+
+<head>
+
+    <meta charset="UTF-8">
+
+    <meta
+        name="viewport"
+        content="width=device-width, initial-scale=1.0"
+    >
+
+    <title>
+        Velocity Bikes
+    </title>
+
+    <link
+        rel="stylesheet"
+        href="style.css"
+    >
+
+</head>
+
+
+<body>
+
+
+<!-- =================================
+     NAVBAR
+     ================================= -->
+
+<header class="navbar">
+
+
+    <h1>
+        VELOCITY <span>BIKES</span>
+    </h1>
+
+
+    <!-- MOBILE MENU BUTTON -->
+
+    <button
+        class="menu-button"
+        id="menuButton"
+        type="button"
+    >
+        ☰
+    </button>
+
+
+    <!-- NAVIGATION -->
+
+    <nav id="mainNav">
+
+        <a href="index.html">
+            Home
+        </a>
+
+        <a href="bikes.html">
+            Bikes
+        </a>
+
+        <a href="contact.html">
+            Test Ride
+        </a>
+
+        <a href="login.html">
+            Admin
+        </a>
+
+    </nav>
+
+</header>
+
+
+
+<!-- =================================
+     HERO
+     ================================= -->
+
+<section class="hero">
+
+    <div class="hero-content">
+
+
+        <p class="section-small">
+            WELCOME TO VELOCITY BIKES
+        </p>
+
+
+        <h2>
+
+            Ride Your
+            <span>Dream Bike</span>
+
+        </h2>
+
+
+        <p>
+
+            Discover powerful motorcycles,
+            premium designs and unforgettable
+            riding experiences.
+
+        </p>
+
+
+        <div class="hero-buttons">
+
+
+            <a
+                href="bikes.html"
+                class="hero-button"
+            >
+                Explore Bikes
+            </a>
+
+
+            <a
+                href="contact.html"
+                class="hero-button secondary"
+            >
+                Book Test Ride
+            </a>
+
+
+        </div>
+
+    </div>
+
+</section>
+
+
+
+<!-- =================================
+     FEATURED BIKES
+     ================================= -->
+
+<section class="home-bikes">
+
+
+    <div class="home-heading">
+
+
+        <p class="section-small">
+            OUR COLLECTION
+        </p>
+
+
+        <h2>
+            Featured Bikes
+        </h2>
+
+
+        <p>
+            Explore some of our latest motorcycles.
+        </p>
+
+
+    </div>
+
+
+
+    <!-- BIKE LIST -->
+
+    <div
+        id="homeBikeList"
+        class="bike-container"
+    >
+
+        <p>
+            Loading bikes...
+        </p>
+
+    </div>
+
+
+
+    <!-- VIEW ALL -->
+
+    <div class="view-all">
+
+        <a href="bikes.html">
+
+            View All Bikes →
+
+        </a>
+
+    </div>
+
+
+</section>
+
+
+
+<!-- =================================
+     WHY CHOOSE US
+     ================================= -->
+
+<section class="why-us">
+
+
+    <div class="home-heading">
+
+
+        <p class="section-small">
+            WHY CHOOSE US
+        </p>
+
+
+        <h2>
+            The Velocity Difference
+        </h2>
+
+
+    </div>
+
+
+
+    <div class="features">
+
+
+        <!-- FEATURE 1 -->
+
+        <div class="feature">
+
+
+            <div class="feature-icon">
+                🏍️
+            </div>
+
+
+            <h3>
+                Premium Bikes
+            </h3>
+
+
+            <p>
+
+                Explore a carefully selected
+                collection of quality motorcycles.
+
+            </p>
+
+
+        </div>
+
+
+
+        <!-- FEATURE 2 -->
+
+        <div class="feature">
+
+
+            <div class="feature-icon">
+                🔧
+            </div>
+
+
+            <h3>
+                Expert Service
+            </h3>
+
+
+            <p>
+
+                Our experienced team keeps your
+                motorcycle performing at its best.
+
+            </p>
+
+
+        </div>
+
+
+
+        <!-- FEATURE 3 -->
+
+        <div class="feature">
+
+
+            <div class="feature-icon">
+                🤝
+            </div>
+
+
+            <h3>
+                Customer First
+            </h3>
+
+
+            <p>
+
+                We make buying your dream bike
+                simple and enjoyable.
+
+            </p>
+
+
+        </div>
+
+
+    </div>
+
+
+</section>
+
+
+
+<!-- =================================
+     FOOTER
+     ================================= -->
+
+<footer>
+
+
+    <h3>
+        VELOCITY BIKES
+    </h3>
+
+
+    <p>
+        Your journey starts here.
+    </p>
+
+
+    <p>
+        © 2026 Velocity Bikes
+    </p>
+
+
+</footer>
+
+
+
+<!-- =================================
+     HOME PAGE JAVASCRIPT
+     ================================= -->
+
+<script>
+
+
+// =================================
+// MOBILE MENU
+// =================================
+
+const menuButton =
+    document.getElementById(
+        "menuButton"
+    );
+
+
+const mainNav =
+    document.getElementById(
+        "mainNav"
+    );
+
+
+menuButton.addEventListener(
+    "click",
+    function () {
+
+        mainNav.classList.toggle(
+            "show"
+        );
+
+    }
+);
+
+
+
+// =================================
+// LOAD FEATURED BIKES
+// =================================
+
+async function loadHomeBikes() {
+
+
+    const bikeList =
+        document.getElementById(
+            "homeBikeList"
+        );
+
+
+    try {
+
+
+        const response =
+            await fetch(
+                "http://127.0.0.1:5000/bikes"
+            );
+
+
+        if (!response.ok) {
+
+            throw new Error(
+                "Failed to load bikes"
+            );
+
+        }
+
+
+        const bikes =
+            await response.json();
+
+
+        bikeList.innerHTML = "";
+
+
+        // Show only first 3 bikes
+
+        const featuredBikes =
+            bikes.slice(
+                0,
+                3
+            );
+
+
+        if (
+            featuredBikes.length === 0
+        ) {
+
+            bikeList.innerHTML = `
+
+                <p>
+                    No bikes available.
+                </p>
+
+            `;
+
+            return;
+
+        }
+
+
+
+        featuredBikes.forEach(
+            function (bike) {
+
+
+                const card =
+                    document.createElement(
+                        "div"
+                    );
+
+
+                card.className =
+                    "bike-card";
+
+
+
+                card.innerHTML = `
+
+                    <img
+
+                        class="bike-image"
+
+                        src="${
+                            bike.image ||
+                            "images/default-bike.jpg"
+                        }"
+
+                        alt="${bike.name}"
+
+                        onerror="
+                            this.src='images/default-bike.jpg'
+                        "
+
+                    >
+
+
+                    <div
+                        class="bike-card-content"
+                    >
+
+
+                        <h3>
+                            ${bike.name}
+                        </h3>
+
+
+
+                        <p class="price">
+
+                            ₹${Number(
+                                bike.price || 0
+                            ).toLocaleString(
+                                "en-IN"
+                            )}
+
+                        </p>
+
+
+
+                        <div
+                            class="bike-specs"
+                        >
+
+
+                            <span>
+
+                                ⚙️
+                                ${bike.engine || "N/A"}
+
+                            </span>
+
+
+                            <span>
+
+                                🛣️
+                                ${bike.mileage || "N/A"}
+
+                            </span>
+
+
+                        </div>
+
+
+
+                        <p
+                            class="bike-power"
+                        >
+
+                            Power:
+                            ${bike.power || "N/A"}
+
+                        </p>
+
+
+
+                        <button
+                            class="details-button"
+                            type="button"
+                            onclick="
+                                bookTestRide(
+                                    '${escapeValue(
+                                        bike.name
+                                    )}'
+                                )
+                            "
+                        >
+
+                            Book Test Ride
+
+                        </button>
+
+
+                    </div>
+
+                `;
+
+
+                bikeList.appendChild(
+                    card
+                );
+
+
+            }
+        );
+
+
+    }
+
+
+    catch (error) {
+
+
+        console.error(
+            "Home bike error:",
+            error
+        );
+
+
+        bikeList.innerHTML = `
+
+            <p>
+                Cannot connect to Flask server.
+            </p>
+
+        `;
+
+    }
+
+}
+
+
+
+// =================================
+// ESCAPE BIKE NAME
+// =================================
+
+function escapeValue(
+    value
+) {
+
+    return String(value)
+        .replace(
+            /'/g,
+            "\\'"
+        );
+
+}
+
+
+
+// =================================
+// BOOK TEST RIDE
+// =================================
+
+function bookTestRide(
+    bikeName
+) {
+
+
+    window.location.href =
+        "contact.html?bike=" +
+        encodeURIComponent(
+            bikeName
+        );
+
+}
+
+
+
+// =================================
+// START
+// =================================
+
+loadHomeBikes();
+
+
+</script>
+
+
+</body>
+
+</html>

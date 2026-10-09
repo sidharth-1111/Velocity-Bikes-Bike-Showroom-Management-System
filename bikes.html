@@ -1,0 +1,529 @@
+<!DOCTYPE html>
+<html>
+
+<head>
+
+    <meta charset="UTF-8">
+
+    <meta
+        name="viewport"
+        content="width=device-width, initial-scale=1.0"
+    >
+
+    <title>
+        Our Bikes - Velocity Bikes
+    </title>
+
+    <link
+        rel="stylesheet"
+        href="style.css"
+    >
+
+</head>
+
+
+<body>
+
+
+<!-- =================================
+     NAVBAR
+     ================================= -->
+
+<header class="navbar">
+
+
+    <h1>
+        VELOCITY <span>BIKES</span>
+    </h1>
+
+
+    <button
+        class="menu-button"
+        id="menuButton"
+        type="button"
+    >
+        ☰
+    </button>
+
+
+    <nav id="mainNav">
+
+        <a href="index.html">
+            Home
+        </a>
+
+        <a href="bikes.html">
+            Bikes
+        </a>
+
+        <a href="contact.html">
+            Test Ride
+        </a>
+
+        <a href="login.html">
+            Admin
+        </a>
+
+    </nav>
+
+</header>
+
+
+
+<!-- =================================
+     BIKE PAGE
+     ================================= -->
+
+<section class="bike-page">
+
+
+    <div class="bike-heading">
+
+
+        <p class="section-small">
+            VELOCITY BIKES
+        </p>
+
+
+        <h2>
+            Our Bikes
+        </h2>
+
+
+        <p>
+            Explore our collection of premium motorcycles.
+        </p>
+
+
+    </div>
+
+
+
+    <!-- SEARCH -->
+
+    <div class="search-box">
+
+
+        <input
+            type="text"
+            id="search"
+            placeholder="🔍 Search for a bike..."
+        >
+
+
+    </div>
+
+
+
+    <!-- BIKE LIST -->
+
+    <div
+        id="bikeList"
+        class="bike-container"
+    >
+
+        <p>
+            Loading bikes...
+        </p>
+
+
+    </div>
+
+
+</section>
+
+
+
+<!-- =================================
+     FOOTER
+     ================================= -->
+
+<footer>
+
+
+    <h3>
+        VELOCITY BIKES
+    </h3>
+
+
+    <p>
+        Your journey starts here.
+    </p>
+
+
+    <p>
+        © 2026 Velocity Bikes
+    </p>
+
+
+</footer>
+
+
+
+<!-- =================================
+     JAVASCRIPT
+     ================================= -->
+
+<script>
+
+
+// =================================
+// MOBILE MENU
+// =================================
+
+const menuButton =
+    document.getElementById(
+        "menuButton"
+    );
+
+
+const mainNav =
+    document.getElementById(
+        "mainNav"
+    );
+
+
+menuButton.addEventListener(
+    "click",
+    function () {
+
+        mainNav.classList.toggle(
+            "show"
+        );
+
+    }
+);
+
+
+
+// =================================
+// STORE BIKES
+// =================================
+
+let allBikes = [];
+
+
+
+// =================================
+// LOAD BIKES
+// =================================
+
+async function loadBikes() {
+
+
+    const bikeList =
+        document.getElementById(
+            "bikeList"
+        );
+
+
+    try {
+
+
+        const response =
+            await fetch(
+                "http://127.0.0.1:5000/bikes"
+            );
+
+
+        if (!response.ok) {
+
+            throw new Error(
+                "Failed to load bikes"
+            );
+
+        }
+
+
+        allBikes =
+            await response.json();
+
+
+        displayBikes(
+            allBikes
+        );
+
+
+    }
+
+
+    catch (error) {
+
+
+        console.error(
+            "Bike loading error:",
+            error
+        );
+
+
+        bikeList.innerHTML = `
+
+            <p>
+                Cannot connect to Flask server.
+            </p>
+
+        `;
+
+    }
+
+}
+
+
+
+// =================================
+// DISPLAY BIKES
+// =================================
+
+function displayBikes(
+    bikes
+) {
+
+
+    const bikeList =
+        document.getElementById(
+            "bikeList"
+        );
+
+
+    bikeList.innerHTML = "";
+
+
+
+    if (
+        !bikes ||
+        bikes.length === 0
+    ) {
+
+
+        bikeList.innerHTML = `
+
+            <p>
+                No bikes found.
+            </p>
+
+        `;
+
+
+        return;
+
+    }
+
+
+
+    bikes.forEach(
+        function (bike) {
+
+
+            const card =
+                document.createElement(
+                    "div"
+                );
+
+
+            card.className =
+                "bike-card";
+
+
+
+            card.innerHTML = `
+
+                <img
+
+                    class="bike-image"
+
+                    src="${
+                        bike.image ||
+                        "images/default-bike.jpg"
+                    }"
+
+                    alt="${bike.name}"
+
+                    onerror="
+                        this.src='images/default-bike.jpg'
+                    "
+
+                >
+
+
+                <div
+                    class="bike-card-content"
+                >
+
+
+                    <h3>
+                        ${bike.name}
+                    </h3>
+
+
+                    <p class="price">
+
+                        ₹${Number(
+                            bike.price || 0
+                        ).toLocaleString(
+                            "en-IN"
+                        )}
+
+                    </p>
+
+
+                    <div
+                        class="bike-specs"
+                    >
+
+                        <span>
+
+                            ⚙️
+                            ${bike.engine || "N/A"}
+
+                        </span>
+
+
+                        <span>
+
+                            🛣️
+                            ${bike.mileage || "N/A"}
+
+                        </span>
+
+                    </div>
+
+
+                    <p class="bike-power">
+
+                        Power:
+                        ${bike.power || "N/A"}
+
+                    </p>
+
+
+                    <button
+                        class="details-button"
+                        type="button"
+                    >
+
+                        Book Test Ride
+
+                    </button>
+
+
+                </div>
+
+            `;
+
+
+
+            const button =
+                card.querySelector(
+                    ".details-button"
+                );
+
+
+            button.addEventListener(
+                "click",
+                function () {
+
+
+                    bookTestRide(
+                        bike.name
+                    );
+
+
+                }
+            );
+
+
+            bikeList.appendChild(
+                card
+            );
+
+
+        }
+    );
+
+}
+
+
+
+// =================================
+// SEARCH
+// =================================
+
+document
+    .getElementById(
+        "search"
+    )
+    .addEventListener(
+        "input",
+        function () {
+
+
+            const searchText =
+                this.value
+                    .toLowerCase()
+                    .trim();
+
+
+            const filtered =
+                allBikes.filter(
+                    function (bike) {
+
+
+                        const name =
+                            (
+                                bike.name ||
+                                ""
+                            )
+                            .toLowerCase();
+
+
+                        return name.includes(
+                            searchText
+                        );
+
+
+                    }
+                );
+
+
+            displayBikes(
+                filtered
+            );
+
+
+        }
+    );
+
+
+
+// =================================
+// BOOK TEST RIDE
+// =================================
+
+function bookTestRide(
+    bikeName
+) {
+
+
+    window.location.href =
+        "contact.html?bike=" +
+        encodeURIComponent(
+            bikeName
+        );
+
+}
+
+
+
+// =================================
+// START
+// =================================
+
+loadBikes();
+
+
+</script>
+
+
+</body>
+
+</html>

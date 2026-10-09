@@ -1,0 +1,300 @@
+<!DOCTYPE html>
+<html>
+
+<head>
+    <title>Bike Details - Velocity Bikes</title>
+
+    <link rel="stylesheet" href="style.css">
+</head>
+
+<body>
+
+<header class="navbar">
+
+    <h1>VELOCITY <span>BIKES</span></h1>
+
+    <nav>
+        <a href="index.html">Home</a>
+        <a href="bikes.html">Bikes</a>
+        <a href="contact.html">Test Ride</a>
+    </nav>
+
+</header>
+
+
+<section class="bike-details">
+
+    <!-- BIKE IMAGE -->
+
+    <div class="bike-image-section">
+
+        <img
+            id="bikeImage"
+            class="bike-large-image"
+            src="images/default-bike.jpg"
+            alt="Bike"
+        >
+
+    </div>
+
+
+    <!-- BIKE INFORMATION -->
+
+    <div class="details-info">
+
+        <p class="section-small">
+            VELOCITY BIKES
+        </p>
+
+        <h2 id="bikeName">
+            Loading...
+        </h2>
+
+        <h3 id="bikePrice">
+            Loading...
+        </h3>
+
+        <p id="bikeDescription">
+            Loading bike information...
+        </p>
+
+
+        <h3>
+            Specifications
+        </h3>
+
+        <ul>
+
+            <li>
+                Engine:
+                <span id="bikeEngine">
+                    -
+                </span>
+            </li>
+
+            <li>
+                Mileage:
+                <span id="bikeMileage">
+                    -
+                </span>
+            </li>
+
+            <li>
+                Power:
+                <span id="bikePower">
+                    -
+                </span>
+            </li>
+
+        </ul>
+
+
+        <button
+    id="bookRideButton"
+>
+    Book Test Ride
+</button>
+
+    </div>
+
+</section>
+
+
+<footer>
+
+    <h3>
+        VELOCITY BIKES
+    </h3>
+
+    <p>
+        Your journey starts here.
+    </p>
+
+    <p>
+        © 2026 Velocity Bikes
+    </p>
+
+</footer>
+
+
+<script>
+
+async function loadBikeDetails() {
+
+    const params =
+        new URLSearchParams(
+            window.location.search
+        );
+
+    const id =
+        params.get("id");
+
+
+    console.log(
+        "Bike ID:",
+        id
+    );
+
+
+    if (!id) {
+
+        document.getElementById(
+            "bikeName"
+        ).textContent =
+            "No bike ID found.";
+
+        return;
+    }
+
+
+    try {
+
+        const response =
+            await fetch(
+                "http://127.0.0.1:5000/bikes/" +
+                encodeURIComponent(id)
+            );
+
+
+        console.log(
+            "API Status:",
+            response.status
+        );
+
+
+        const bike =
+            await response.json();
+
+
+        console.log(
+            "Bike Data:",
+            bike
+        );
+
+
+        if (!response.ok) {
+
+            document.getElementById(
+                "bikeName"
+            ).textContent =
+                "Bike not found.";
+
+            return;
+        }
+
+
+        // =========================
+        // BIKE DETAILS
+        // =========================
+
+        document.getElementById(
+            "bikeName"
+        ).textContent =
+            bike.name || "Unknown Bike";
+
+
+        document.getElementById(
+            "bikePrice"
+        ).textContent =
+            "₹" +
+            Number(
+                bike.price || 0
+            ).toLocaleString("en-IN");
+
+
+        document.getElementById(
+            "bikeEngine"
+        ).textContent =
+            bike.engine || "N/A";
+
+
+        document.getElementById(
+            "bikeMileage"
+        ).textContent =
+            bike.mileage || "N/A";
+
+
+        document.getElementById(
+            "bikePower"
+        ).textContent =
+            bike.power || "N/A";
+
+
+        // =========================
+        // BIKE IMAGE
+        // =========================
+
+        document.getElementById(
+            "bikeImage"
+        ).src =
+            bike.image ||
+            "images/default-bike.jpg";
+
+
+        document.getElementById(
+            "bikeImage"
+        ).alt =
+            bike.name;
+
+
+        // =========================
+        // DESCRIPTION
+        // =========================
+
+        document.getElementById(
+            "bikeDescription"
+        ).textContent =
+            "Experience the power, performance and style of " +
+            bike.name +
+            ". Visit Velocity Bikes for a test ride.";
+
+    }
+
+
+    catch (error) {
+
+        console.error(
+            "Bike details error:",
+            error
+        );
+
+
+        document.getElementById(
+            "bikeName"
+        ).textContent =
+            "Unable to load bike details.";
+
+    }
+
+}
+
+
+loadBikeDetails();
+
+document
+    .getElementById("bookRideButton")
+    .addEventListener(
+        "click",
+        function() {
+
+            const bikeName =
+                document.getElementById(
+                    "bikeName"
+                ).textContent;
+
+
+            window.location.href =
+                "contact.html?bike=" +
+                encodeURIComponent(
+                    bikeName
+                );
+
+        }
+    );
+
+</script>
+
+
+</body>
+
+</html>

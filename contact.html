@@ -1,0 +1,515 @@
+<!DOCTYPE html>
+<html>
+
+<head>
+
+    <meta charset="UTF-8">
+
+    <meta
+        name="viewport"
+        content="width=device-width, initial-scale=1.0"
+    >
+
+    <title>
+        Contact & Test Ride - Velocity Bikes
+    </title>
+
+    <link
+        rel="stylesheet"
+        href="style.css"
+    >
+
+</head>
+
+
+<body>
+
+
+<header class="navbar">
+
+    <h1>
+        VELOCITY <span>BIKES</span>
+    </h1>
+
+
+    <button
+        class="menu-button"
+        id="menuButton"
+        type="button"
+    >
+        ☰
+    </button>
+
+
+    <nav id="mainNav">
+
+        <a href="index.html">
+            Home
+        </a>
+
+        <a href="bikes.html">
+            Bikes
+        </a>
+
+        <a href="contact.html">
+            Test Ride
+        </a>
+
+        <a href="login.html">
+            Admin
+        </a>
+
+    </nav>
+
+</header>
+
+
+<!-- =========================
+     TEST RIDE
+     ========================= -->
+
+<section class="booking-page">
+
+    <div class="booking-container">
+
+        <div class="booking-heading">
+
+            <p class="section-small">
+                VELOCITY BIKES
+            </p>
+
+            <h2>
+                Book Your Test Ride
+            </h2>
+
+            <p>
+                Experience your dream bike before you buy.
+            </p>
+
+        </div>
+
+
+        <form id="testRideForm">
+
+            <label>
+                Your Name
+            </label>
+
+            <input
+                type="text"
+                id="customerName"
+                placeholder="Enter your name"
+                required
+            >
+
+
+            <label>
+                Phone Number
+            </label>
+
+            <input
+                type="tel"
+                id="customerPhone"
+                placeholder="Enter phone number"
+                required
+            >
+
+
+            <label>
+                Email
+            </label>
+
+            <input
+                type="email"
+                id="customerEmail"
+                placeholder="Enter email"
+                required
+            >
+
+
+            <label>
+                Select Bike
+            </label>
+
+            <select
+                id="selectedBike"
+                required
+            >
+
+                <option value="">
+                    Loading bikes...
+                </option>
+
+            </select>
+
+
+            <label>
+                Preferred Date
+            </label>
+
+            <input
+                type="date"
+                id="rideDate"
+                required
+            >
+
+
+            <button type="submit">
+                Book Test Ride
+            </button>
+
+        </form>
+
+
+        <div id="bookingMessage"></div>
+
+    </div>
+
+</section>
+
+
+<!-- =========================
+     SHOWROOM CONTACT
+     ========================= -->
+
+<section class="contact-section">
+
+    <div class="home-heading">
+
+        <p class="section-small">
+            GET IN TOUCH
+        </p>
+
+        <h2>
+            Visit Velocity Bikes
+        </h2>
+
+    </div>
+
+
+    <div class="contact-grid">
+
+
+        <div class="contact-card">
+
+            <div class="contact-icon">
+                📍
+            </div>
+
+            <h3>
+                Showroom
+            </h3>
+
+            <p>
+                Main Road, Kerala
+            </p>
+
+        </div>
+
+
+        <div class="contact-card">
+
+            <div class="contact-icon">
+                📞
+            </div>
+
+            <h3>
+                Phone
+            </h3>
+
+            <p>
+                +91 98765 43210
+            </p>
+
+        </div>
+
+
+        <div class="contact-card">
+
+            <div class="contact-icon">
+                ✉️
+            </div>
+
+            <h3>
+                Email
+            </h3>
+
+            <p>
+                sales@velocitybikes.com
+            </p>
+
+        </div>
+
+    </div>
+
+
+    <div class="whatsapp-area">
+
+        <a
+            href="https://wa.me/919876543210"
+            target="_blank"
+            class="whatsapp-button"
+        >
+            💬 Chat on WhatsApp
+        </a>
+
+    </div>
+
+</section>
+
+
+<footer>
+
+    <h3>
+        VELOCITY BIKES
+    </h3>
+
+    <p>
+        Your journey starts here.
+    </p>
+
+    <p>
+        © 2026 Velocity Bikes
+    </p>
+
+</footer>
+
+
+<script>
+
+
+// =========================
+// MOBILE MENU
+// =========================
+
+document
+    .getElementById("menuButton")
+    .addEventListener(
+        "click",
+        function () {
+
+            document
+                .getElementById("mainNav")
+                .classList.toggle(
+                    "show"
+                );
+
+        }
+    );
+
+
+// =========================
+// LOAD BIKES
+// =========================
+
+async function loadBikeOptions() {
+
+    const select =
+        document.getElementById(
+            "selectedBike"
+        );
+
+
+    try {
+
+        const response =
+            await fetch(
+                "http://127.0.0.1:5000/bikes"
+            );
+
+
+        const bikes =
+            await response.json();
+
+
+        select.innerHTML =
+            '<option value="">Select a bike</option>';
+
+
+        bikes.forEach(
+            function (bike) {
+
+                const option =
+                    document.createElement(
+                        "option"
+                    );
+
+                option.value =
+                    bike.name;
+
+                option.textContent =
+                    bike.name;
+
+                select.appendChild(
+                    option
+                );
+
+            }
+        );
+
+
+        // Auto select bike
+
+        const params =
+            new URLSearchParams(
+                window.location.search
+            );
+
+
+        const selected =
+            params.get("bike");
+
+
+        if (selected) {
+
+            select.value =
+                selected;
+
+        }
+
+    }
+
+    catch (error) {
+
+        console.error(
+            error
+        );
+
+        select.innerHTML =
+            '<option value="">Unable to load bikes</option>';
+
+    }
+
+}
+
+
+// =========================
+// BOOK TEST RIDE
+// =========================
+
+document
+    .getElementById("testRideForm")
+    .addEventListener(
+        "submit",
+        async function (event) {
+
+            event.preventDefault();
+
+
+            const booking = {
+
+                name:
+                    document.getElementById(
+                        "customerName"
+                    ).value,
+
+                phone:
+                    document.getElementById(
+                        "customerPhone"
+                    ).value,
+
+                email:
+                    document.getElementById(
+                        "customerEmail"
+                    ).value,
+
+                bike:
+                    document.getElementById(
+                        "selectedBike"
+                    ).value,
+
+                date:
+                    document.getElementById(
+                        "rideDate"
+                    ).value
+
+            };
+
+
+            try {
+
+                const response =
+                    await fetch(
+                        "http://127.0.0.1:5000/book",
+                        {
+
+                            method: "POST",
+
+                            headers: {
+                                "Content-Type":
+                                    "application/json"
+                            },
+
+                            body:
+                                JSON.stringify(
+                                    booking
+                                )
+
+                        }
+                    );
+
+
+                const result =
+                    await response.json();
+
+
+                const message =
+                    document.getElementById(
+                        "bookingMessage"
+                    );
+
+
+                if (response.ok) {
+
+                    message.textContent =
+                        result.message ||
+                        "Test ride booked successfully!";
+
+                    message.className =
+                        "success-message";
+
+                    document
+                        .getElementById(
+                            "testRideForm"
+                        )
+                        .reset();
+
+                }
+
+                else {
+
+                    message.textContent =
+                        result.error ||
+                        "Booking failed.";
+
+                    message.className =
+                        "error-message";
+
+                }
+
+            }
+
+            catch (error) {
+
+                console.error(
+                    error
+                );
+
+                document.getElementById(
+                    "bookingMessage"
+                ).textContent =
+                    "Cannot connect to Flask server.";
+
+            }
+
+        }
+    );
+
+
+loadBikeOptions();
+
+</script>
+
+</body>
+
+</html>

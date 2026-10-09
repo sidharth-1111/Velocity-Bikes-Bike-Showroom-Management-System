@@ -1,0 +1,1610 @@
+<!DOCTYPE html>
+<html>
+
+<head>
+
+    <meta charset="UTF-8">
+
+    <meta
+        name="viewport"
+        content="width=device-width, initial-scale=1.0"
+    >
+
+    <title>
+        Dashboard - Velocity Bikes
+    </title>
+
+    <link
+        rel="stylesheet"
+        href="style.css"
+    >
+
+</head>
+
+
+<body class="admin-body">
+
+
+<!-- =================================
+     ADMIN NAVBAR
+     ================================= -->
+
+<header class="admin-navbar">
+
+
+    <div class="admin-logo">
+
+        🏍️
+
+        <div>
+
+            <strong>
+                VELOCITY
+            </strong>
+
+            <small>
+                ADMIN
+            </small>
+
+        </div>
+
+    </div>
+
+
+    <div class="admin-nav-right">
+
+        <a href="index.html">
+            View Showroom
+        </a>
+
+
+        <button
+            onclick="logout()"
+            class="admin-logout"
+        >
+            Logout
+        </button>
+
+    </div>
+
+</header>
+
+
+
+<!-- =================================
+     DASHBOARD
+     ================================= -->
+
+<main class="admin-main">
+
+
+    <div class="admin-header">
+
+        <p class="admin-overline">
+            MANAGEMENT
+        </p>
+
+        <h1>
+            Dashboard
+        </h1>
+
+        <p>
+            Manage your bikes and test ride requests.
+        </p>
+
+    </div>
+
+
+
+    <!-- =================================
+         STATISTICS
+         ================================= -->
+
+    <div class="admin-stats">
+
+
+        <div class="stat-card">
+
+            <span>
+                🏍️
+            </span>
+
+            <div>
+
+                <small>
+                    TOTAL BIKES
+                </small>
+
+                <strong id="bikeCount">
+                    0
+                </strong>
+
+            </div>
+
+        </div>
+
+
+        <div class="stat-card">
+
+            <span>
+                📅
+            </span>
+
+            <div>
+
+                <small>
+                    TEST RIDES
+                </small>
+
+                <strong id="bookingCount">
+                    0
+                </strong>
+
+            </div>
+
+        </div>
+
+
+        <div class="stat-card">
+
+            <span>
+                ✓
+            </span>
+
+            <div>
+
+                <small>
+                    STATUS
+                </small>
+
+                <strong>
+                    ACTIVE
+                </strong>
+
+            </div>
+
+        </div>
+
+
+    </div>
+
+
+
+    <!-- =================================
+         ADD BIKE
+         ================================= -->
+
+    <section class="admin-section">
+
+
+        <div class="section-title">
+
+            <div>
+
+                <p>
+                    INVENTORY
+                </p>
+
+                <h2>
+                    Add New Bike
+                </h2>
+
+            </div>
+
+        </div>
+
+
+        <form
+            id="addBikeForm"
+            class="bike-form"
+        >
+
+
+            <div class="form-grid">
+
+
+                <div class="form-field">
+
+                    <label>
+                        Bike Name
+                    </label>
+
+                    <input
+                        type="text"
+                        id="bikeName"
+                        placeholder="e.g. Yamaha MT 15"
+                        required
+                    >
+
+                </div>
+
+
+                <div class="form-field">
+
+                    <label>
+                        Price
+                    </label>
+
+                    <input
+                        type="number"
+                        id="bikePrice"
+                        placeholder="170000"
+                        required
+                    >
+
+                </div>
+
+
+                <div class="form-field">
+
+                    <label>
+                        Engine
+                    </label>
+
+                    <input
+                        type="text"
+                        id="bikeEngine"
+                        placeholder="155cc"
+                        required
+                    >
+
+                </div>
+
+
+                <div class="form-field">
+
+                    <label>
+                        Mileage
+                    </label>
+
+                    <input
+                        type="text"
+                        id="bikeMileage"
+                        placeholder="48 km/l"
+                        required
+                    >
+
+                </div>
+
+
+                <div class="form-field">
+
+                    <label>
+                        Power
+                    </label>
+
+                    <input
+                        type="text"
+                        id="bikePower"
+                        placeholder="18.4 PS"
+                        required
+                    >
+
+                </div>
+
+
+                <div class="form-field">
+
+                    <label>
+                        Bike Image
+                    </label>
+
+                    <input
+                        type="file"
+                        id="bikeImage"
+                        accept="image/jpeg,image/png,image/webp"
+                        required
+                    >
+
+                </div>
+
+
+            </div>
+
+
+            <!-- IMAGE PREVIEW -->
+
+            <div class="admin-form-bottom">
+
+
+                <div class="admin-preview">
+
+
+                    <img
+                        id="imagePreview"
+                        src=""
+                        alt="Bike Preview"
+                    >
+
+
+                    <span
+                        id="previewText"
+                    >
+                        Image preview
+                    </span>
+
+
+                </div>
+
+
+                <button
+                    type="submit"
+                    class="primary-admin-button"
+                >
+                    + Add Bike
+                </button>
+
+
+            </div>
+
+
+            <p
+                id="addMessage"
+                class="admin-message"
+            ></p>
+
+
+        </form>
+
+    </section>
+
+
+
+    <!-- =================================
+         INVENTORY
+         ================================= -->
+
+    <section class="admin-section">
+
+
+        <div class="section-title">
+
+            <p>
+                INVENTORY
+            </p>
+
+            <h2>
+                Your Bikes
+            </h2>
+
+        </div>
+
+
+        <div
+            id="bikeInventory"
+            class="inventory-grid"
+        >
+
+            Loading bikes...
+
+        </div>
+
+
+    </section>
+
+
+
+    <!-- =================================
+         EDIT BIKE
+         ================================= -->
+
+    <section
+        class="admin-section"
+        id="editBox"
+        style="display:none;"
+    >
+
+
+        <div class="section-title">
+
+            <p>
+                INVENTORY
+            </p>
+
+            <h2>
+                Edit Bike
+            </h2>
+
+        </div>
+
+
+        <form
+            id="editBikeForm"
+            class="bike-form"
+        >
+
+
+            <input
+                type="hidden"
+                id="editBikeId"
+            >
+
+
+            <div class="form-grid">
+
+
+                <div class="form-field">
+
+                    <label>
+                        Bike Name
+                    </label>
+
+                    <input
+                        type="text"
+                        id="editName"
+                        required
+                    >
+
+                </div>
+
+
+                <div class="form-field">
+
+                    <label>
+                        Price
+                    </label>
+
+                    <input
+                        type="number"
+                        id="editPrice"
+                        required
+                    >
+
+                </div>
+
+
+                <div class="form-field">
+
+                    <label>
+                        Engine
+                    </label>
+
+                    <input
+                        type="text"
+                        id="editEngine"
+                        required
+                    >
+
+                </div>
+
+
+                <div class="form-field">
+
+                    <label>
+                        Mileage
+                    </label>
+
+                    <input
+                        type="text"
+                        id="editMileage"
+                        required
+                    >
+
+                </div>
+
+
+                <div class="form-field">
+
+                    <label>
+                        Power
+                    </label>
+
+                    <input
+                        type="text"
+                        id="editPower"
+                        required
+                    >
+
+                </div>
+
+
+                <div class="form-field">
+
+                    <label>
+                        Existing Image URL
+                    </label>
+
+                    <input
+                        type="text"
+                        id="editImage"
+                        readonly
+                    >
+
+                </div>
+
+
+            </div>
+
+
+            <div class="edit-actions">
+
+
+                <button
+                    type="submit"
+                    class="primary-admin-button"
+                >
+                    Save Changes
+                </button>
+
+
+                <button
+                    type="button"
+                    onclick="cancelEdit()"
+                    class="secondary-admin-button"
+                >
+                    Cancel
+                </button>
+
+
+            </div>
+
+        </form>
+
+    </section>
+
+
+
+    <!-- =================================
+         BOOKINGS
+         ================================= -->
+
+    <section class="admin-section">
+
+
+        <div class="section-title">
+
+            <p>
+                CUSTOMERS
+            </p>
+
+            <h2>
+                Test Ride Requests
+            </h2>
+
+        </div>
+
+
+        <div
+            id="bookings"
+            class="bookings-grid"
+        >
+
+            Loading bookings...
+
+        </div>
+
+
+    </section>
+
+
+</main>
+
+
+
+<footer class="admin-footer">
+
+    Velocity Bikes Admin Dashboard
+    © 2026
+
+</footer>
+
+
+
+<script>
+
+
+// =========================================
+// CHECK LOGIN
+// =========================================
+
+async function checkLogin() {
+
+    try {
+
+        const response =
+            await fetch(
+                "http://127.0.0.1:5000/check-login",
+                {
+                    credentials:
+                        "include"
+                }
+            );
+
+
+        const result =
+            await response.json();
+
+
+        if (!result.logged_in) {
+
+            window.location.href =
+                "login.html";
+
+        }
+
+    }
+
+    catch(error) {
+
+        console.error(
+            "Login check error:",
+            error
+        );
+
+        window.location.href =
+            "login.html";
+
+    }
+
+}
+
+
+checkLogin();
+
+
+
+// =========================================
+// IMAGE PREVIEW
+// =========================================
+
+document
+    .getElementById(
+        "bikeImage"
+    )
+    .addEventListener(
+        "change",
+        function() {
+
+
+            const file =
+                this.files[0];
+
+
+            const image =
+                document.getElementById(
+                    "imagePreview"
+                );
+
+
+            const text =
+                document.getElementById(
+                    "previewText"
+                );
+
+
+            if (!file) {
+
+                image.style.display =
+                    "none";
+
+                text.style.display =
+                    "block";
+
+                return;
+
+            }
+
+
+            const imageURL =
+                URL.createObjectURL(
+                    file
+                );
+
+
+            image.src =
+                imageURL;
+
+
+            image.style.display =
+                "block";
+
+
+            text.style.display =
+                "none";
+
+        }
+    );
+
+
+
+// =========================================
+// ADD BIKE
+// =========================================
+
+document
+    .getElementById(
+        "addBikeForm"
+    )
+    .addEventListener(
+        "submit",
+        async function(event) {
+
+
+            event.preventDefault();
+
+
+            const imageFile =
+                document.getElementById(
+                    "bikeImage"
+                ).files[0];
+
+
+            if (!imageFile) {
+
+                alert(
+                    "Please select a bike image."
+                );
+
+                return;
+
+            }
+
+
+            const message =
+                document.getElementById(
+                    "addMessage"
+                );
+
+
+            try {
+
+
+                // =================================
+                // UPLOAD IMAGE
+                // =================================
+
+                message.textContent =
+                    "Uploading image...";
+
+
+                const formData =
+                    new FormData();
+
+
+                formData.append(
+                    "image",
+                    imageFile
+                );
+
+
+                const uploadResponse =
+                    await fetch(
+                        "http://127.0.0.1:5000/upload-image",
+                        {
+
+                            method:
+                                "POST",
+
+                            credentials:
+                                "include",
+
+                            body:
+                                formData
+
+                        }
+                    );
+
+
+                const uploadResult =
+                    await uploadResponse.json();
+
+
+                if (!uploadResponse.ok) {
+
+                    message.textContent =
+                        uploadResult.error ||
+                        "Image upload failed.";
+
+                    return;
+
+                }
+
+
+                // =================================
+                // CREATE BIKE
+                // =================================
+
+                message.textContent =
+                    "Saving bike...";
+
+
+                const bike = {
+
+                    name:
+                        document.getElementById(
+                            "bikeName"
+                        ).value,
+
+                    price:
+                        document.getElementById(
+                            "bikePrice"
+                        ).value,
+
+                    engine:
+                        document.getElementById(
+                            "bikeEngine"
+                        ).value,
+
+                    mileage:
+                        document.getElementById(
+                            "bikeMileage"
+                        ).value,
+
+                    power:
+                        document.getElementById(
+                            "bikePower"
+                        ).value,
+
+                    image:
+                        uploadResult.image
+
+                };
+
+
+                const response =
+                    await fetch(
+                        "http://127.0.0.1:5000/bikes",
+                        {
+
+                            method:
+                                "POST",
+
+                            credentials:
+                                "include",
+
+                            headers: {
+
+                                "Content-Type":
+                                    "application/json"
+
+                            },
+
+                            body:
+                                JSON.stringify(
+                                    bike
+                                )
+
+                        }
+                    );
+
+
+                const result =
+                    await response.json();
+
+
+                if (response.ok) {
+
+
+                    message.textContent =
+                        "✓ Bike added successfully.";
+
+
+                    message.style.color =
+                        "green";
+
+
+                    document
+                        .getElementById(
+                            "addBikeForm"
+                        )
+                        .reset();
+
+
+                    document.getElementById(
+                        "imagePreview"
+                    ).style.display =
+                        "none";
+
+
+                    document.getElementById(
+                        "previewText"
+                    ).style.display =
+                        "block";
+
+
+                    loadInventory();
+
+                }
+
+                else {
+
+                    message.textContent =
+                        result.error ||
+                        "Failed to add bike.";
+
+                }
+
+            }
+
+            catch(error) {
+
+                console.error(
+                    "Add bike error:",
+                    error
+                );
+
+
+                message.textContent =
+                    "Cannot connect to Flask server.";
+
+            }
+
+        }
+    );
+
+
+
+// =========================================
+// LOAD INVENTORY
+// =========================================
+
+async function loadInventory() {
+
+
+    const inventory =
+        document.getElementById(
+            "bikeInventory"
+        );
+
+
+    try {
+
+
+        const response =
+            await fetch(
+                "http://127.0.0.1:5000/bikes"
+            );
+
+
+        const bikes =
+            await response.json();
+
+
+        document.getElementById(
+            "bikeCount"
+        ).textContent =
+            bikes.length;
+
+
+        inventory.innerHTML =
+            "";
+
+
+        if (!bikes.length) {
+
+            inventory.innerHTML =
+                "<p>No bikes available.</p>";
+
+            return;
+
+        }
+
+
+        bikes.forEach(
+            function(bike) {
+
+
+                inventory.innerHTML += `
+
+                    <article
+                        class="inventory-item"
+                    >
+
+                        <img
+                            src="${bike.image || ""}"
+                            alt="${bike.name}"
+                            onerror="
+                                this.style.display='none'
+                            "
+                        >
+
+
+                        <div
+                            class="inventory-details"
+                        >
+
+                            <span>
+                                MOTORCYCLE
+                            </span>
+
+
+                            <h3>
+                                ${bike.name}
+                            </h3>
+
+
+                            <strong>
+
+                                ₹${Number(
+                                    bike.price || 0
+                                ).toLocaleString(
+                                    "en-IN"
+                                )}
+
+                            </strong>
+
+
+                            <p>
+
+                                ${bike.engine || "N/A"}
+                                ·
+                                ${bike.mileage || "N/A"}
+                                ·
+                                ${bike.power || "N/A"}
+
+                            </p>
+
+                        </div>
+
+
+                        <div
+                            class="inventory-buttons"
+                        >
+
+                            <button
+                                onclick="
+                                    editBike(
+                                        '${bike._id}'
+                                    )
+                                "
+                            >
+                                Edit
+                            </button>
+
+
+                            <button
+                                onclick="
+                                    deleteBike(
+                                        '${bike._id}'
+                                    )
+                                "
+                            >
+                                Delete
+                            </button>
+
+                        </div>
+
+                    </article>
+
+                `;
+
+            }
+        );
+
+    }
+
+    catch(error) {
+
+        console.error(
+            "Inventory error:",
+            error
+        );
+
+
+        inventory.innerHTML =
+            "<p>Unable to load inventory.</p>";
+
+    }
+
+}
+
+
+
+// =========================================
+// EDIT BIKE
+// =========================================
+
+async function editBike(id) {
+
+
+    try {
+
+
+        const response =
+            await fetch(
+                "http://127.0.0.1:5000/bikes/" +
+                id
+            );
+
+
+        const bike =
+            await response.json();
+
+
+        if (!response.ok) {
+
+            alert(
+                bike.error ||
+                "Unable to load bike."
+            );
+
+            return;
+
+        }
+
+
+        document.getElementById(
+            "editBikeId"
+        ).value =
+            bike._id;
+
+
+        document.getElementById(
+            "editName"
+        ).value =
+            bike.name || "";
+
+
+        document.getElementById(
+            "editPrice"
+        ).value =
+            bike.price || "";
+
+
+        document.getElementById(
+            "editEngine"
+        ).value =
+            bike.engine || "";
+
+
+        document.getElementById(
+            "editMileage"
+        ).value =
+            bike.mileage || "";
+
+
+        document.getElementById(
+            "editPower"
+        ).value =
+            bike.power || "";
+
+
+        document.getElementById(
+            "editImage"
+        ).value =
+            bike.image || "";
+
+
+        document.getElementById(
+            "editBox"
+        ).style.display =
+            "block";
+
+
+        document.getElementById(
+            "editBox"
+        ).scrollIntoView({
+            behavior:
+                "smooth"
+        });
+
+    }
+
+    catch(error) {
+
+        console.error(
+            "Edit error:",
+            error
+        );
+
+        alert(
+            "Unable to load bike."
+        );
+
+    }
+
+}
+
+
+
+// =========================================
+// UPDATE BIKE
+// =========================================
+
+document
+    .getElementById(
+        "editBikeForm"
+    )
+    .addEventListener(
+        "submit",
+        async function(event) {
+
+
+            event.preventDefault();
+
+
+            const id =
+                document.getElementById(
+                    "editBikeId"
+                ).value;
+
+
+            const bike = {
+
+                name:
+                    document.getElementById(
+                        "editName"
+                    ).value,
+
+                price:
+                    document.getElementById(
+                        "editPrice"
+                    ).value,
+
+                engine:
+                    document.getElementById(
+                        "editEngine"
+                    ).value,
+
+                mileage:
+                    document.getElementById(
+                        "editMileage"
+                    ).value,
+
+                power:
+                    document.getElementById(
+                        "editPower"
+                    ).value,
+
+                image:
+                    document.getElementById(
+                        "editImage"
+                    ).value
+
+            };
+
+
+            try {
+
+
+                const response =
+                    await fetch(
+                        "http://127.0.0.1:5000/bikes/" +
+                        id,
+                        {
+
+                            method:
+                                "PUT",
+
+                            credentials:
+                                "include",
+
+                            headers: {
+
+                                "Content-Type":
+                                    "application/json"
+
+                            },
+
+                            body:
+                                JSON.stringify(
+                                    bike
+                                )
+
+                        }
+                    );
+
+
+                const result =
+                    await response.json();
+
+
+                if (response.ok) {
+
+                    alert(
+                        "Bike updated successfully!"
+                    );
+
+
+                    cancelEdit();
+
+
+                    loadInventory();
+
+                }
+
+                else {
+
+                    alert(
+                        result.error ||
+                        "Update failed."
+                    );
+
+                }
+
+            }
+
+            catch(error) {
+
+                console.error(
+                    "Update error:",
+                    error
+                );
+
+
+                alert(
+                    "Cannot connect to Flask."
+                );
+
+            }
+
+        }
+    );
+
+
+
+// =========================================
+// CANCEL EDIT
+// =========================================
+
+function cancelEdit() {
+
+    document.getElementById(
+        "editBox"
+    ).style.display =
+        "none";
+
+}
+
+
+
+// =========================================
+// DELETE BIKE
+// =========================================
+
+async function deleteBike(id) {
+
+
+    const confirmed =
+        confirm(
+            "Are you sure you want to delete this bike?"
+        );
+
+
+    if (!confirmed) {
+
+        return;
+
+    }
+
+
+    try {
+
+
+        const response =
+            await fetch(
+                "http://127.0.0.1:5000/bikes/" +
+                id,
+                {
+
+                    method:
+                        "DELETE",
+
+                    credentials:
+                        "include"
+
+                }
+            );
+
+
+        const result =
+            await response.json();
+
+
+        if (response.ok) {
+
+            alert(
+                "Bike deleted successfully!"
+            );
+
+
+            loadInventory();
+
+        }
+
+        else {
+
+            alert(
+                result.error ||
+                "Delete failed."
+            );
+
+        }
+
+    }
+
+    catch(error) {
+
+        console.error(
+            "Delete error:",
+            error
+        );
+
+
+        alert(
+            "Cannot connect to Flask."
+        );
+
+    }
+
+}
+
+
+
+// =========================================
+// LOAD BOOKINGS
+// =========================================
+
+async function loadBookings() {
+
+
+    const bookingsDiv =
+        document.getElementById(
+            "bookings"
+        );
+
+
+    try {
+
+
+        const response =
+            await fetch(
+                "http://127.0.0.1:5000/bookings",
+                {
+                    credentials:
+                        "include"
+                }
+            );
+
+
+        const data =
+            await response.json();
+
+
+        document.getElementById(
+            "bookingCount"
+        ).textContent =
+            data.length;
+
+
+        bookingsDiv.innerHTML =
+            "";
+
+
+        if (!data.length) {
+
+            bookingsDiv.innerHTML =
+                "<p>No test ride requests yet.</p>";
+
+            return;
+
+        }
+
+
+        data.forEach(
+            function(booking) {
+
+
+                bookingsDiv.innerHTML += `
+
+                    <article
+                        class="booking-item"
+                    >
+
+                        <div
+                            class="booking-icon"
+                        >
+                            📅
+                        </div>
+
+
+                        <div>
+
+                            <span>
+                                TEST RIDE
+                            </span>
+
+
+                            <h3>
+                                ${booking.name || "Customer"}
+                            </h3>
+
+
+                            <p>
+
+                                ${booking.bike || "Bike"}
+                                ·
+                                ${booking.date || "Date"}
+
+                            </p>
+
+
+                            <small>
+
+                                ${booking.phone || ""}
+
+                                ${
+                                    booking.email
+                                    ? " · " + booking.email
+                                    : ""
+                                }
+
+                            </small>
+
+                        </div>
+
+                    </article>
+
+                `;
+
+            }
+        );
+
+    }
+
+    catch(error) {
+
+        console.error(
+            "Booking error:",
+            error
+        );
+
+
+        bookingsDiv.innerHTML =
+            "<p>Unable to load bookings.</p>";
+
+    }
+
+}
+
+
+
+// =========================================
+// LOGOUT
+// =========================================
+
+async function logout() {
+
+
+    try {
+
+        await fetch(
+            "http://127.0.0.1:5000/logout",
+            {
+                credentials:
+                    "include"
+            }
+        );
+
+    }
+
+    catch(error) {
+
+        console.error(
+            error
+        );
+
+    }
+
+
+    window.location.href =
+        "login.html";
+
+}
+
+
+
+// =========================================
+// START
+// =========================================
+
+loadInventory();
+
+loadBookings();
+
+</script>
+
+
+</body>
+
+</html>

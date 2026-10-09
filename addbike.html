@@ -1,0 +1,110 @@
+<!DOCTYPE html>
+<html>
+
+<head>
+    <title>Add Bike</title>
+    <link rel="stylesheet" href="style.css">
+</head>
+
+<body>
+
+<header>
+    <h1>VELOCITY BIKES</h1>
+</header>
+
+<section class="contact">
+
+    <h2>Add New Bike</h2>
+
+    <form id="bikeForm">
+
+        <input
+            type="text"
+            id="name"
+            placeholder="Bike Name"
+            required
+        >
+
+        <input
+            type="number"
+            id="price"
+            placeholder="Price"
+            required
+        >
+
+        <input
+            type="text"
+            id="engine"
+            placeholder="Engine"
+            required
+        >
+
+        <input
+            type="text"
+            id="mileage"
+            placeholder="Mileage"
+            required
+        >
+
+        <input
+            type="text"
+            id="power"
+            placeholder="Power"
+            required
+        >
+
+        <button type="submit">
+            Add Bike
+        </button>
+
+    </form>
+
+</section>
+
+<script>
+
+let form = document.getElementById("bikeForm");
+
+form.addEventListener("submit", async function(event) {
+
+    event.preventDefault();
+
+    let bike = {
+
+        name: document.getElementById("name").value,
+
+        price: document.getElementById("price").value,
+
+        engine: document.getElementById("engine").value,
+
+        mileage: document.getElementById("mileage").value,
+
+        power: document.getElementById("power").value
+
+    };
+
+    let response = await fetch(
+        "http://127.0.0.1:5000/bikes",
+        {
+            method: "POST",
+
+            headers: {
+                "Content-Type": "application/json"
+            },
+
+            body: JSON.stringify(bike)
+        }
+    );
+
+    let result = await response.json();
+
+    alert(result.message);
+
+    form.reset();
+
+});
+
+</script>
+
+</body>
+</html>
